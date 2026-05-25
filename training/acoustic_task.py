@@ -31,7 +31,8 @@ class AcousticDataset(BaseDataset):
             self.required_variances['voicing'] = 0.0
         if hparams['use_tension_embed']:
             self.required_variances['tension'] = 0.0
-
+        if hparams.get('use_growl_embed', False):
+            self.required_variances['growl'] = 0.0 
         self.need_key_shift = hparams['use_key_shift_embed']
         self.need_speed = hparams['use_speed_embed']
         self.need_spk_id = hparams['use_spk_id']
@@ -92,6 +93,8 @@ class AcousticTask(BaseTask):
             self.required_variances.append('voicing')
         if hparams['use_tension_embed']:
             self.required_variances.append('tension')
+        if hparams.get('use_growl_embed', False):
+            self.required_variances.append('growl') 
         super()._finish_init()
 
     def _build_model(self):
