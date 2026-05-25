@@ -1,5 +1,5 @@
 base_config:
-  - configs/acoustic/base.yaml
+  - configs/acoustic.yaml
 
 raw_data_dir:    data/emvd/ds_output
 binary_data_dir: data/emvd/binary
