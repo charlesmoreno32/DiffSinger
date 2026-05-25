@@ -1,0 +1,14 @@
+base_config:
+  - configs/acoustic/base.yaml
+
+raw_data_dir:    data/emvd/ds_output
+binary_data_dir: data/emvd/binary
+
+num_spk: 27
+use_spk_id: true
+use_growl_embed: true
+
+max_frames: 2000
+lr: 0.0004
+max_updates: 50000
+val_check_interval: 2000
