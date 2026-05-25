@@ -3,7 +3,7 @@ base_config:
 
 datasets:
   - name: emvd
-    data_dir: data/emvd/ds_output
+    raw_data_dir: data/emvd/ds_output
     speaker: emvd
     language: en
 
