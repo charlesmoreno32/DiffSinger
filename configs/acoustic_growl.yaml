@@ -6,6 +6,7 @@ datasets:
     raw_data_dir: data/emvd/ds_output
     speaker: emvd
     language: en
+    spk_id: 0
 
 speakers:
   - emvd
