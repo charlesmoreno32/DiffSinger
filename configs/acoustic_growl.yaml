@@ -7,6 +7,11 @@ datasets:
     speaker: emvd
     language: en
     spk_id: 0
+    test_prefixes:
+      - Singer1_ClearVoice_High_a
+      - Singer1_DeathGrowl_Low_a
+      - Singer10_ClearVoice_High_a
+      - Singer10_DeathGrowl_Low_a
 
 speakers:
   - emvd
