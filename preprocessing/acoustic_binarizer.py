@@ -16,6 +16,8 @@ import librosa
 import numpy as np
 import torch
 
+import json
+
 from basics.base_binarizer import BaseBinarizer
 from basics.base_pe import BasePE
 from modules.fastspeech.tts_modules import LengthRegulator
@@ -44,6 +46,7 @@ ACOUSTIC_ITEM_ATTRIBUTES = [
     'breathiness',
     'voicing',
     'tension',
+    'growl',
     'key_shift',
     'speed',
 ]
@@ -64,6 +67,7 @@ class AcousticBinarizer(BaseBinarizer):
         self.need_breathiness = hparams['use_breathiness_embed']
         self.need_voicing = hparams['use_voicing_embed']
         self.need_tension = hparams['use_tension_embed']
+        self.need_growl = hparams.get('use_growl_embed', False)
         assert hparams['mel_base'] == 'e', (
             "Mel base must be set to \'e\' according to 2nd stage of the migration plan. "
             "See https://github.com/openvpi/DiffSinger/releases/tag/v2.3.0 for more details."
@@ -105,6 +109,18 @@ class AcousticBinarizer(BaseBinarizer):
                     f'Lengths of ph_seq and ph_dur mismatch in \'{item_name}\'.'
                 assert all(ph_dur >= 0 for ph_dur in temp_dict['ph_dur']), \
                     f'Negative ph_dur found in \'{item_name}\'.'
+                    
+                ds_fn = raw_data_dir / f'{item_name}.ds'
+                if ds_fn.exists():
+                    with open(ds_fn, 'r', encoding='utf-8') as ds_file:
+                        ds_data = json.load(ds_file)
+                    if 'growl' in ds_data:
+                        temp_dict['growl'] = ds_data['growl']
+                        temp_dict['growl_timestep'] = ds_data.get(
+                            'growl_timestep',
+                            hparams['hop_size'] / hparams['audio_sample_rate']
+                        )   
+                        
                 meta_data_dict[f'{ds_id}:{item_name}'] = temp_dict
 
         return meta_data_dict
@@ -229,6 +245,22 @@ class AcousticBinarizer(BaseBinarizer):
 
         if hparams['use_speed_embed']:
             processed_input['speed'] = 1.
+            
+        if self.need_growl:
+            if 'growl' in meta_data:
+                growl_raw = np.array(
+                    [float(v) for v in meta_data['growl'].split()],
+                    dtype=np.float32
+                )
+                if len(growl_raw) != length:
+                    growl_raw = np.interp(
+                        np.linspace(0, len(growl_raw) - 1, length),
+                        np.arange(len(growl_raw)),
+                        growl_raw
+                    ).astype(np.float32)
+                processed_input['growl'] = growl_raw
+            else:
+                processed_input['growl'] = np.zeros(length, dtype=np.float32)
 
         return processed_input
 
