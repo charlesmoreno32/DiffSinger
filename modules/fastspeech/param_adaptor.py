@@ -7,7 +7,7 @@ from modules.core.ddpm import MultiVarianceDiffusion
 from utils import filter_kwargs
 from utils.hparams import hparams
 
-VARIANCE_CHECKLIST = ['energy', 'breathiness', 'voicing', 'tension']
+VARIANCE_CHECKLIST = ['energy', 'breathiness', 'voicing', 'tension', 'growl']
 
 
 class ParameterAdaptorModule(torch.nn.Module):
