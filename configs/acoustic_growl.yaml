@@ -1,6 +1,18 @@
 base_config:
   - configs/acoustic.yaml
 
+datasets:
+  - name: emvd
+    data_dir: data/emvd/ds_output
+    speaker: emvd
+    language: en
+
+speakers:
+  - emvd
+
+dictionaries:
+  en: dictionaries/arpabet.txt
+
 raw_data_dir:    data/emvd/ds_output
 binary_data_dir: data/emvd/binary
 
