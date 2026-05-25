@@ -185,11 +185,15 @@ class AcousticBinarizer(BaseBinarizer):
             processed_input['energy'] = energy.cpu().numpy()
 
         # create a DecomposedWaveform object for further feature extraction
-        dec_waveform = DecomposedWaveform(
-            waveform, samplerate=hparams['audio_sample_rate'], f0=gt_f0 * ~uv,
-            hop_size=hparams['hop_size'], fft_size=hparams['fft_size'], win_size=hparams['win_size'],
-            algorithm=hparams['hnsep']
-        )
+        # only needed for breathiness, voicing, or tension — skip if none are used
+        if self.need_breathiness or self.need_voicing or self.need_tension:
+            dec_waveform = DecomposedWaveform(
+                waveform, samplerate=hparams['audio_sample_rate'], f0=gt_f0 * ~uv,
+                hop_size=hparams['hop_size'], fft_size=hparams['fft_size'], win_size=hparams['win_size'],
+                algorithm=hparams['hnsep']
+            )
+        else:
+            dec_waveform = None
 
         if self.need_breathiness:
             # get ground truth breathiness
