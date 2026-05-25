@@ -73,6 +73,9 @@ class AcousticBinarizer(BaseBinarizer):
             "See https://github.com/openvpi/DiffSinger/releases/tag/v2.3.0 for more details."
         )
 
+    def check_coverage(self):
+        pass
+    
     def load_meta_data(self, raw_data_dir: pathlib.Path, ds_id, spk, lang):
         meta_data_dict = {}
         with open(raw_data_dir / 'transcriptions.csv', 'r', encoding='utf-8') as f:

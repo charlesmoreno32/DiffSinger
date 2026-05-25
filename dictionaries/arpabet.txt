@@ -56,5 +56,3 @@ V	V
 W	W
 Y	Y
 Z	Z
-AP	AP
-SP	SP
