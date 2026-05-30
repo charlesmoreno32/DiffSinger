@@ -19,6 +19,9 @@ speakers:
 dictionaries:
   en: dictionaries/arpabet.txt
 
+pe: parselmouth
+pe_ckpt: ~
+
 raw_data_dir:    data/emvd/ds_output
 binary_data_dir: data/emvd/binary
 

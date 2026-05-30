@@ -1,0 +1,35 @@
+base_config:
+  - configs/acoustic.yaml
+
+datasets:
+  - name: finetune
+    raw_data_dir: data/finetune/clean
+    speaker: finetune_singer
+    language: en
+    spk_id: 0
+    test_prefixes:
+      - SONG_Rain_on_Me
+
+speakers:
+  - finetune_singer
+
+dictionaries:
+  en: dictionaries/arpabet.txt
+
+raw_data_dir:    data/finetune/clean
+binary_data_dir: data/finetune/binary
+
+num_spk: 1
+use_spk_id: true
+use_growl_embed: true
+
+finetune_enabled: true
+finetune_ckpt_path: checkpoints/diffgrowl_phase1/model_ckpt_steps_50000.ckpt
+finetune_strict_shapes: false
+finetune_ignored_params:
+  - model.fs2.spk_embed
+
+max_frames: 2000
+lr: 0.0001
+max_updates: 10000
+val_check_interval: 1000
